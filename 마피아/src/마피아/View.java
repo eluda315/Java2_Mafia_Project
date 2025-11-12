@@ -47,7 +47,7 @@ public class View extends JFrame {
 		//this.players = players;
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 981, 579);
+		setBounds(100, 100, 980, 580);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
