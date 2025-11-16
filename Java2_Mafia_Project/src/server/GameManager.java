@@ -58,7 +58,7 @@ public class GameManager {
 	    // 커맨드 객체에게 실행을 위임
 	    Command command = commandMap.get(commandKey);
 	    if (command != null) {
-	        command.execute(sender, payload, currentState);
+	        //command.execute(sender, payload, currentState);
 	    } else {
 	    	// join, message, mafia_message가 아닌 명령어가 왔을 시
 	    	sender.sendMessage("알 수 없는 명령어입니다: " + commandKey);
