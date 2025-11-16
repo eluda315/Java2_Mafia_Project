@@ -14,6 +14,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.SwingConstants;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
 import java.awt.Color;
@@ -26,9 +28,11 @@ public class Lobby extends JFrame {
 	private JLabel titleTestLabel;
 	private JButton startButton;
 	private JLabel playerTextLabel;
-	private JList playerList;
+	private JList<String> playerList;
 	private JTextField textField;
 	private JLabel lblNewLabel;
+	
+	private DefaultListModel<String> player = new DefaultListModel<String>();
 
 	/**
 	 * Launch the application.
@@ -73,10 +77,17 @@ public class Lobby extends JFrame {
 		playerTextLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		playerTextLabel.setBounds(312, 186, 334, 49);
 		contentPane.add(playerTextLabel);
-		
-		playerList = new JList();
+										
+		playerList = new JList<String>();
 		playerList.setBackground(new Color(192, 192, 192));
 		playerList.setBounds(182, 237, 596, 135);
+		playerList.setVisibleRowCount(6);
+		playerList.setModel(player);
+		
+		DefaultListCellRenderer centerRenderer = new DefaultListCellRenderer();
+		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER); // 가운데 정렬
+		playerList.setCellRenderer(centerRenderer);
+		
 		contentPane.add(playerList);
 		
 		textField = new JTextField();
@@ -84,21 +95,26 @@ public class Lobby extends JFrame {
 		contentPane.add(textField);
 		textField.setColumns(10);
 		
-		textField.addActionListener(new ActionListener() {
-			
+		//닉네임 입력받아 ClientManager에게 보내기
+		textField.addActionListener(new ActionListener() { 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				JTextField nickname = (JTextField) e.getSource(); 				
-				ClientManager.sendMessage(nickname.getText()); 
-				System.out.println("닉네임 "+ nickname.getText() + " ClientManeger에게 전달완료");
-				nickname.setText("");
+				JTextField nicknameField = (JTextField) e.getSource(); 	
+				String nickname = nicknameField.getText();
+				ClientManager.sendMessage(nickname); 
+				System.out.println("닉네임: "+ nickname + " ClientManeger에게 전달완료");
+				player.addElement(nickname);
+				nicknameField.setText("");
+						
 			}
 		});
-		
+				
 		lblNewLabel = new JLabel("닉네임을 입력하세요");
 		lblNewLabel.setBounds(359, 158, 112, 15);
 		contentPane.add(lblNewLabel);
 
 	}
+	
+	
 }
