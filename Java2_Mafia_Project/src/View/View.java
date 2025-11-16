@@ -1,3 +1,4 @@
+package View;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -72,10 +73,10 @@ public class View extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				JTextField input = (JTextField) e.getSource(); //ÀÔ·Â ¹Þ¾Æ¼­
-				chatArea.append(input.getText() + '\n'); //chatArea¿¡ ºÙÀÌ°í
-				chatArea.setCaretPosition(chatArea.getDocument().getLength()); //¸Ç ¾Æ·¡·Î ½ºÅ©·Ñ
-				input.setText(""); //inputField´Â ºñ¿ì±â
+				JTextField input = (JTextField) e.getSource(); //ï¿½Ô·ï¿½ ï¿½Þ¾Æ¼ï¿½
+				chatArea.append(input.getText() + '\n'); //chatAreaï¿½ï¿½ ï¿½ï¿½ï¿½Ì°ï¿½
+				chatArea.setCaretPosition(chatArea.getDocument().getLength()); //ï¿½ï¿½ ï¿½Æ·ï¿½ï¿½ï¿½ ï¿½ï¿½Å©ï¿½ï¿½
+				input.setText(""); //inputFieldï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			}
 		}); 
 		
