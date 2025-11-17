@@ -67,19 +67,24 @@ public class CommandManager {
 	}
 	
 	public void broadcastAll(String message) {
-        for (ServerThread client : allClients) {
-            client.sendMessage(message);
-        }
-    }
+	    // 동기화 리스트긴한데 혹시 반복 중에 캐릭터가 제거되거나 하면 에러나니까 동기화 블록으로 묶었습니다.
+	    synchronized (allClients) {
+	        for (ServerThread client : allClients) {
+	            client.sendMessage(message);
+	        }
+	    }
+	}
 	
 	// Player 객체가 없어서 일단 주석 처리했습니다. 대충 이런식으로 만들면 될 것 같아요.
 	public void broadcastToMafia(String message) {
-//         for (ServerThread client : allClients) {
-//             if (client.getRole(id?).equals("MAFIA")) {
-//                 client.sendMessage(message);
-//             }
-//         }
-    }
+//	     synchronized (allClients) {
+//	         for (ServerThread client : allClients) {
+//	             if (client.getRole(id?).equals("MAFIA")) {
+//	                 client.sendMessage(message);
+//	             }
+//	         }
+//	     }
+	}
 	
 	
 }
