@@ -25,14 +25,14 @@ public class Lobby extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JLabel titleTestLabel;
+	private JLabel titleTextLabel;
 	private JButton startButton;
 	private JLabel playerTextLabel;
 	private JList<String> playerList;
-	private JTextField textField;
-	private JLabel lblNewLabel;
+	private JTextField nicknameInputField;
+	private JLabel noticeTextLabel;
 	
-	private DefaultListModel<String> player = new DefaultListModel<String>();
+	private DefaultListModel<String> enteredPlayer = new DefaultListModel<String>();
 
 	/**
 	 * Launch the application.
@@ -61,17 +61,18 @@ public class Lobby extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		titleTestLabel = new JLabel("마피아 게임 프로젝트");
-		titleTestLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		titleTestLabel.setFont(new Font("굴림", Font.PLAIN, 80));
-		titleTestLabel.setBounds(0, 43, 966, 102);
-		contentPane.add(titleTestLabel);
+		titleTextLabel = new JLabel("마피아 게임 프로젝트");
+		titleTextLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		titleTextLabel.setFont(new Font("굴림", Font.PLAIN, 80));
+		titleTextLabel.setBounds(0, 43, 966, 102);
+		contentPane.add(titleTextLabel);
 		
 		startButton = new JButton("시작하기");
 		startButton.setFont(new Font("굴림", Font.PLAIN, 50));
 		startButton.setBounds(312, 395, 334, 102);
 		contentPane.add(startButton);
-		
+		startButton.setEnabled(false);
+						
 		playerTextLabel = new JLabel("입장한 플레이어");
 		playerTextLabel.setFont(new Font("굴림", Font.PLAIN, 30));
 		playerTextLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -82,7 +83,7 @@ public class Lobby extends JFrame {
 		playerList.setBackground(new Color(192, 192, 192));
 		playerList.setBounds(182, 237, 596, 135);
 		playerList.setVisibleRowCount(6);
-		playerList.setModel(player);
+		playerList.setModel(enteredPlayer);
 		
 		DefaultListCellRenderer centerRenderer = new DefaultListCellRenderer();
 		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER); // 가운데 정렬
@@ -90,31 +91,37 @@ public class Lobby extends JFrame {
 		
 		contentPane.add(playerList);
 		
-		textField = new JTextField();
-		textField.setBounds(483, 155, 106, 21);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		nicknameInputField = new JTextField();
+		nicknameInputField.setBounds(483, 155, 106, 21);
+		contentPane.add(nicknameInputField);
+		nicknameInputField.setColumns(10);
 		
 		//닉네임 입력받아 ClientManager에게 보내기
-		textField.addActionListener(new ActionListener() { 			
+		nicknameInputField.addActionListener(new ActionListener() { 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				JTextField nicknameField = (JTextField) e.getSource(); 	
 				String nickname = nicknameField.getText();
 				ClientManager.sendMessage(nickname); 
-				System.out.println("닉네임: "+ nickname + " ClientManeger에게 전달완료");
-				player.addElement(nickname);
+				System.out.println("닉네임: "+ nickname + " ClientManeger에게 보내기 완료");
+				//서버까지 연결되면 서버가 잘 받아야 화면에 띄우기
+				enteredPlayer.addElement(nickname);
 				nicknameField.setText("");
-						
+				
+				if(enteredPlayer.getSize() >= 4) {
+					startButton.setEnabled(true);
+				}						
 			}
 		});
 				
-		lblNewLabel = new JLabel("닉네임을 입력하세요");
-		lblNewLabel.setBounds(359, 158, 112, 15);
-		contentPane.add(lblNewLabel);
+		noticeTextLabel = new JLabel("닉네임을 입력하세요");
+		noticeTextLabel.setBounds(359, 158, 112, 15);
+		contentPane.add(noticeTextLabel);
 
 	}
+	
+	
 	
 	
 }
