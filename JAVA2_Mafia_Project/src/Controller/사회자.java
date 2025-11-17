@@ -116,8 +116,8 @@ public class 사회자 {
         
 	}
 	
-	public void getState() {
-		
+	public IState getState() {
+		return gameState;
 	}
 	
 }
