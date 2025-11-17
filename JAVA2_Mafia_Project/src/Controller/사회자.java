@@ -39,12 +39,14 @@ public class 사회자 {
 
 	public 사회자() {
 		매니저 = this;
-		roleFactory = new RoleFactory(); 
+		roleFactory = new RoleFactory();
 	}
 	
 	public void set_state(IState state) {
-		System.out.println("=========="+this.gameState.getClass().getSimpleName()+"==========");
 		this.gameState = state;
+		if(state!=null) {
+		System.out.println("=========="+this.gameState.getClass().getSimpleName()+"==========");
+		}
 	}
 	
 	public void init_game() {
@@ -85,7 +87,6 @@ public class 사회자 {
 				return p;
 			}
 		}
-		
 		return null;
 	}
 	
@@ -93,12 +94,19 @@ public class 사회자 {
 		init_game();
 		Scanner sc = new Scanner(System.in);
 		
-		this.gameState.execute(매니저);
-        while(true) {
-        	this.set_state(new 밤());
-        	this.set_state(new 토론());
-        	this.set_state(new 토론());
+        while(gameState != null) {//상태 있는 동안
+        	set_state(new 밤());//처음 상태: 밤
+        	this.gameState.execute(매니저);
+        	checkEnd();
+        	
+        	set_state(new 토론());
+        	this.gameState.execute(매니저);
+        	
+        	set_state(new 투표());
+        	this.gameState.execute(매니저);
+        	checkEnd();
         }
+        
 	}
 	
 }

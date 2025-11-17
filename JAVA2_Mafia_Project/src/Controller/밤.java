@@ -32,8 +32,14 @@ public class 밤 implements IState{
 
 	@Override
 	public void execute(사회자 manager) {
-		// TODO Auto-generated method stub
+		// TODO 마피아는 마피아채팅해서 누구 죽일지 결정
+		// TODO 의사는 누구 살릴지 결정
+		// TODO 경찰은 누굴 조사할지 결정
+		// 이 결과 알려주는 역할도 해야되는데 사회자가
 		
+		manager.checkEnd();
+		
+		manager.set_state(new 토론());
 	}
 			
 		
