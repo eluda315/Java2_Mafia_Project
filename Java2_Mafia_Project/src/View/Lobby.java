@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.SwingConstants;
 import javax.swing.DefaultListCellRenderer;
@@ -33,6 +34,8 @@ public class Lobby extends JFrame {
 	private JLabel noticeTextLabel;
 	
 	private DefaultListModel<String> enteredPlayer = new DefaultListModel<String>();
+	
+	public boolean gameStart = false;
 
 	/**
 	 * Launch the application.
@@ -78,12 +81,12 @@ public class Lobby extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub				
+				// TODO Auto-generated method stub	
+				gameStart = true;
 				View view = new View();
 				view.setVisible(true);
 				dispose();
-				ClientManager.sendMessage("게임시작");
-				System.out.println("게임시작 메세지 전송완성");
+				
 			}
 		});
 						
@@ -110,16 +113,13 @@ public class Lobby extends JFrame {
 		contentPane.add(nicknameInputField);
 		nicknameInputField.setColumns(10);
 		
-		//닉네임 입력받아 ClientManager에게 보내기
+		//닉네임 입력받기
 		nicknameInputField.addActionListener(new ActionListener() { 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				JTextField nicknameField = (JTextField) e.getSource(); 	
-				String nickname = nicknameField.getText();
-				ClientManager.sendMessage(nickname); 
-				System.out.println("닉네임: "+ nickname + " ClientManeger에게 보내기 완료");
-				//서버까지 연결되면 서버가 잘 받아야 화면에 띄우기
+				String nickname = nicknameField.getText();				
 				enteredPlayer.addElement(nickname);
 				nicknameField.setText("");
 				
@@ -134,8 +134,9 @@ public class Lobby extends JFrame {
 		contentPane.add(noticeTextLabel);
 
 	}
-	
-	
-	
-	
+
+	public List<String> getEnteredPlayer() {
+		return (List<String>) enteredPlayer;
+	}
+		
 }
