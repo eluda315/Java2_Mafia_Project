@@ -37,9 +37,6 @@ public class 밤 implements IState{
 		// TODO 경찰은 누굴 조사할지 결정
 		// 이 결과 알려주는 역할도 해야되는데 사회자가
 		
-		manager.checkEnd();
-		
-		manager.set_state(new 토론());
 	}
 			
 		

@@ -94,7 +94,7 @@ public class 사회자 {
 		init_game();
 		Scanner sc = new Scanner(System.in);
 		
-        while(gameState != null) {//상태 있는 동안
+        while(true) {
         	set_state(new 밤());//처음 상태: 밤
         	this.gameState.execute(매니저);
         	checkEnd();
