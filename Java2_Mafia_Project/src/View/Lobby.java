@@ -72,6 +72,20 @@ public class Lobby extends JFrame {
 		startButton.setBounds(312, 395, 334, 102);
 		contentPane.add(startButton);
 		startButton.setEnabled(false);
+		
+		//시작하기 버튼 누르면 View 띄우고 Lobby는 닫기
+		startButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub				
+				View view = new View();
+				view.setVisible(true);
+				dispose();
+				ClientManager.sendMessage("게임시작");
+				System.out.println("게임시작 메세지 전송완성");
+			}
+		});
 						
 		playerTextLabel = new JLabel("입장한 플레이어");
 		playerTextLabel.setFont(new Font("굴림", Font.PLAIN, 30));
