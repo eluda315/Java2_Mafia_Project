@@ -13,7 +13,9 @@ import Model.Player;
 public class RoleFactory {
 	
 	//아니.. 중복 없게 id 부여해야 하는데.....
+
 	//여기서 고유번호-id 만들기
+
 	public Player createPlayer(String nickname, int id) {
 		Player player = new Player(nickname, id);
 		
@@ -47,3 +49,4 @@ public class RoleFactory {
 	}
 	
 }
+

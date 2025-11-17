@@ -25,7 +25,7 @@ public class Player {
 		this.role = role;
 	}
 
-
 	
 	
 }
+
