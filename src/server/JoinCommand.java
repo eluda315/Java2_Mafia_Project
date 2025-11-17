@@ -16,7 +16,7 @@ public class JoinCommand implements ICommand{
 	@Override
 	public void execute(ServerThread sender, String payload, IState currentState) {
 		// TODO Auto-generated method stub
-		// 입장한 사람의 Player 객체를 등록(이런 느낌으로 만들면 될 것 같아요)		
+		// 입장한 사람의 Player 객체를 등록(이런 느낌으로 만들면 될 것 같아요)
 		Player newPlayer = logicBrain.createNewPlayer(payload);
 		sender.setPlayer(newPlayer);
 		

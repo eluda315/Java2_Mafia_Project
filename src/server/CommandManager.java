@@ -24,7 +24,7 @@ public class CommandManager {
 		
 		// 커맨드 패턴 적용을 위한 커멘드 초기화
 		this.commandMap = new HashMap<>();
-		//this.commandMap.put("join", new JoinCommand(this, logicBrain)); -> join은 보류
+		this.commandMap.put("join", new JoinCommand(this, logicBrain));
         this.commandMap.put("message", new AllChatCommand(this, logicBrain));
         this.commandMap.put("mafia_message", new MafiaChatCommand(this, logicBrain));
 	}
@@ -57,7 +57,6 @@ public class CommandManager {
 	    	payload="";
 	    }
 	    
-
 	    // 커맨드 객체에게 실행을 위임
 	    ICommand command = commandMap.get(commandKey);
 	    if (command != null) {
@@ -66,6 +65,10 @@ public class CommandManager {
 	    	// message, mafia_message가 아닌 명령어가 왔을 시
 	    	sender.sendMessage("알 수 없는 명령어입니다: " + commandKey);
 	    }
+	}
+	
+	public void commandMessage() {
+		
 	}
 	
 	public void broadcastAll(String message) {

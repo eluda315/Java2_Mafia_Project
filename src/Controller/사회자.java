@@ -8,7 +8,7 @@ import Model.Player;
 
 public class 사회자 {
 	//사회자 객체 하나만 있어야 되니까 싱글톤 생성해봤음
-	public static 사회자 매니저;
+	private static 사회자 매니저;
 	
 	IState gameState = null;
 	RoleFactory roleFactory = null;
@@ -20,6 +20,13 @@ public class 사회자 {
 	
 	private int killedID=0;
 	private int healedID=0;
+	
+	public static 사회자 getInstance() {
+		if(매니저 == null) {
+			매니저 = new 사회자();
+		}
+		return 매니저;
+	}
 	
 	public int getKilledID() {
 		return killedID;
@@ -37,7 +44,7 @@ public class 사회자 {
 		this.healedID = healedID;
 	}
 
-	public 사회자() {
+	private 사회자() {
 		매니저 = this;
 		roleFactory = new RoleFactory();
 	}
@@ -94,7 +101,7 @@ public class 사회자 {
 		init_game();
 		Scanner sc = new Scanner(System.in);
 		
-        while(gameState != null) {//상태 있는 동안
+        while(true) {
         	set_state(new 밤());//처음 상태: 밤
         	this.gameState.execute(매니저);
         	checkEnd();
@@ -107,6 +114,10 @@ public class 사회자 {
         	checkEnd();
         }
         
+	}
+	
+	public IState getState() {
+		return gameState;
 	}
 	
 }
