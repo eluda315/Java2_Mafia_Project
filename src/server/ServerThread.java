@@ -13,10 +13,10 @@ import java.nio.charset.StandardCharsets;
 public class ServerThread extends Thread {
 	private String nickName; // 닉네임은 GameManager가 설정
     private Socket socket;
-    private GameManager gameManager;
+    private CommandManager gameManager;
     private PrintWriter pw;
 
-    public ServerThread(Socket socket, GameManager gm) {
+    public ServerThread(Socket socket, CommandManager gm) {
         this.socket = socket;
         this.gameManager = gm;
     }

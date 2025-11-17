@@ -13,7 +13,7 @@ public class ServerManager {
 
 	public static void main(String[] args) {
 		ServerSocket serverSocket = null;
-		GameManager gameManager = new GameManager();
+		CommandManager gameManager = new CommandManager();
 		
 		try {
 			serverSocket = new ServerSocket();

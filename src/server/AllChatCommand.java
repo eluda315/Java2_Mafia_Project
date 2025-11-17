@@ -1,9 +1,9 @@
 package server;
 
 public class AllChatCommand implements Command {
-	private GameManager gameManager;
-	public AllChatCommand(GameManager gm) {
-		this.gameManager = gm;
+	private CommandManager commandManager;
+	public AllChatCommand(CommandManager cm) {
+		this.commandManager = cm;
 	}
 
 	@Override
@@ -14,7 +14,7 @@ public class AllChatCommand implements Command {
 		
 //		if(currentState instanceof 투표) {
 //			if(sender.is_alive()) {
-//				gameManager.broadcastAll(sender.getNickName() + ": " + payload);
+//				commandManager.broadcastAll(sender.getNickName() + ": " + payload);
 //			} // 죽었으면 그냥 아무것도 안되게 했습니다. 상태를 알려주는 것도 좋을 것 같아요.
 //		} else {
 //			sender.sendMessage("채팅은 토론 상태에서만 할 수 있습니다.");

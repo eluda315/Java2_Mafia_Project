@@ -10,13 +10,13 @@ import java.util.Map;
 
 
 // 주 역할: 모든 게임 로직, 상태, 클라이언트 목록 관리
-public class GameManager {
+public class CommandManager {
 	
 	private State currentState; // State 패턴을 위한 필드
 	private Map<String, Command> commandMap; // Command 패턴을 위한 필드
 	private List<ServerThread> allClients = Collections.synchronizedList(new ArrayList<>()); // 여러 스레드가 동시에 접근하므로 동기화된 리스트 사용
 	
-	public GameManager() {
+	public CommandManager() {
 		// 여기서 현재 상태도 초기화 하면 될 것 같아요
 		//this.currentState = new 투표();
 		
@@ -29,28 +29,29 @@ public class GameManager {
 	
     public synchronized void handleNewConnection(ServerThread clientThread) {
         allClients.add(clientThread);
-        System.out.println("[GameManager] 새 연결. 총 " + allClients.size() + "명");
+        System.out.println("[CommandManager] 새 연결. 총 " + allClients.size() + "명");
         // 수정 가능. 일단은 사용자가 직접 join:닉네임을 쳐야 닉네임이 저장되는 형식임.(해당 클라이언트에게만 보이는 메세지)
         clientThread.sendMessage("서버에 접속했습니다. 닉네임을 'join:닉네임' 형식으로 입력하세요.");
     }
 	
     public synchronized void handleDisconnect(ServerThread clientThread) {
         allClients.remove(clientThread);
-        System.out.println("[GameManager] 연결 해제: " + clientThread.getNickName() + ". 남은 인원 " + allClients.size() + "명");
+        System.out.println("[CommandManager] 연결 해제: " + clientThread.getNickName() + ". 남은 인원 " + allClients.size() + "명");
         broadcastAll(clientThread.getNickName() + "님이 퇴장했습니다."); // 모든 유저에게 퇴장 알림
     }
 
 	// ServerThread가 이 메소드를 호출하면 command 패턴을 적용하여 처리?
 	public synchronized void processMessage(ServerThread sender, String rawMessage) {
 	    if(rawMessage == null || rawMessage.equals("")) return;
-	    System.out.println("[GameManager] 메시지 받음: " + rawMessage);
+	    System.out.println("[CommandManager] 메시지 받음: " + rawMessage);
 		
 	    String[] tokens = rawMessage.split(":", 2);
 	    String commandKey = tokens[0]; // "join", "message", "mafia_message" 중 하나
+	    String payload;
 	    if(tokens.length > 1) {
-	    	String payload = tokens[1]; // 유저가 보낸 메세지(실제 내용)
+	    	payload = tokens[1]; // 유저가 보낸 메세지(실제 내용)
 	    } else {
-	    	String payload="";
+	    	payload="";
 	    }
 	    
 	    
