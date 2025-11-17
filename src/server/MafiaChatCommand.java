@@ -1,5 +1,7 @@
 package server;
 
+import Controller.IState;
+
 public class MafiaChatCommand implements Command{
 	private CommandManager commandManager;
 	public MafiaChatCommand(CommandManager cm) {
@@ -7,7 +9,7 @@ public class MafiaChatCommand implements Command{
 	}
 	
 	@Override
-	public void execute(ServerThread sender, String payload, State currentState) {
+	public void execute(ServerThread sender, String payload, IState currentState) {
 		// TODO Auto-generated method stub
 		// 밤 상태에만 채팅 가능
 		

@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import Controller.*;
+import Model.*;
 
 // -- 클라이언트에서 메세지를 보낼 때 join, message, mafia_message 이런걸 구분해서 보내줘야 할 것 같습니당. --
 
@@ -12,7 +14,7 @@ import java.util.Map;
 // 주 역할: 모든 게임 로직, 상태, 클라이언트 목록 관리
 public class CommandManager {
 	
-	private State currentState; // State 패턴을 위한 필드
+	private IState currentState; // State 패턴을 위한 필드
 	private Map<String, Command> commandMap; // Command 패턴을 위한 필드
 	private List<ServerThread> allClients = Collections.synchronizedList(new ArrayList<>()); // 여러 스레드가 동시에 접근하므로 동기화된 리스트 사용
 	

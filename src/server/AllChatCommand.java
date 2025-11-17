@@ -1,5 +1,7 @@
 package server;
 
+import Controller.IState;
+
 public class AllChatCommand implements Command {
 	private CommandManager commandManager;
 	public AllChatCommand(CommandManager cm) {
@@ -7,7 +9,7 @@ public class AllChatCommand implements Command {
 	}
 
 	@Override
-	public void execute(ServerThread sender, String payload, State currentState) {
+	public void execute(ServerThread sender, String payload, IState currentState) {
 		// TODO Auto-generated method stub
 		// 토론 상태일 때만 실행됨.
 		
