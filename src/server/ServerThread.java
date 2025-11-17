@@ -13,12 +13,12 @@ import java.nio.charset.StandardCharsets;
 public class ServerThread extends Thread {
 	private String nickName; // 닉네임은 GameManager가 설정
     private Socket socket;
-    private CommandManager gameManager;
+    private CommandManager networkBrain;
     private PrintWriter pw;
 
-    public ServerThread(Socket socket, CommandManager gm) {
+    public ServerThread(Socket socket, CommandManager cm) {
         this.socket = socket;
-        this.gameManager = gm;
+        this.networkBrain = cm;
     }
 
     @Override
@@ -28,17 +28,17 @@ public class ServerThread extends Thread {
             this.pw = pw;
 
             // GameManager에게 새로운 클라이언트(나) 연결된 거 알리기
-            gameManager.handleNewConnection(this);
+            networkBrain.handleNewConnection(this);
 
             String request="";
             // 클라이언트 연결이 끊어지면 readLine()이 null 반환
             while ((request = bf.readLine()) != null) {
-                gameManager.processMessage(this, request); // 받은 메세지를 gameManager에게 전달
+            	networkBrain.processMessage(this, request); // 받은 메세지를 gameManager에게 전달
             }
         } catch (IOException e) {
         	log("클라이언트 연결 오류");
         } finally {
-        	gameManager.handleDisconnect(this); // 클라이언트 연결 해제 시 gameManager에게 알리기
+        	networkBrain.handleDisconnect(this); // 클라이언트 연결 해제 시 gameManager에게 알리기
         }
     }
 

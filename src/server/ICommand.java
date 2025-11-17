@@ -2,6 +2,6 @@ package server;
 
 import Controller.IState;
 
-public interface Command {
+public interface ICommand {
 	public void execute(ServerThread sender, String payload, IState currentState);
 }

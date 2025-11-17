@@ -5,8 +5,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import Controller.*;
-import Model.*;
+
+import Controller.사회자;
+
 
 // -- 클라이언트에서 메세지를 보낼 때 join, message, mafia_message 이런걸 구분해서 보내줘야 할 것 같습니당. --
 
@@ -14,21 +15,21 @@ import Model.*;
 // 주 역할: 모든 게임 로직, 상태, 클라이언트 목록 관리
 public class CommandManager {
 	
-	private IState currentState; // State 패턴을 위한 필드
-	private Map<String, Command> commandMap; // Command 패턴을 위한 필드
+	private Map<String, ICommand> commandMap; // Command 패턴을 위한 필드
 	private List<ServerThread> allClients = Collections.synchronizedList(new ArrayList<>()); // 여러 스레드가 동시에 접근하므로 동기화된 리스트 사용
+	private 사회자 logicBrain;
 	
-	public CommandManager() {
-		// 여기서 현재 상태도 초기화 하면 될 것 같아요
-		//this.currentState = new 투표();
+	public CommandManager(사회자 logicBrain) {
+		this.logicBrain = logicBrain;
 		
 		// 커맨드 패턴 적용을 위한 커멘드 초기화
 		this.commandMap = new HashMap<>();
-		this.commandMap.put("join", new JoinCommand(this));
-        this.commandMap.put("message", new AllChatCommand(this));
-        this.commandMap.put("mafia_message", new MafiaChatCommand(this));
+		//this.commandMap.put("join", new JoinCommand(this, logicBrain)); -> join은 보류
+        this.commandMap.put("message", new AllChatCommand(this, logicBrain));
+        this.commandMap.put("mafia_message", new MafiaChatCommand(this, logicBrain));
 	}
 	
+	// TODO 이것도 수정해야 함. 닉네임을 누가 부여할 것인지 결정x
     public synchronized void handleNewConnection(ServerThread clientThread) {
         allClients.add(clientThread);
         System.out.println("[CommandManager] 새 연결. 총 " + allClients.size() + "명");
@@ -42,13 +43,13 @@ public class CommandManager {
         broadcastAll(clientThread.getNickName() + "님이 퇴장했습니다."); // 모든 유저에게 퇴장 알림
     }
 
-	// ServerThread가 이 메소드를 호출하면 command 패턴을 적용하여 처리?
+	// ServerThread가 이 메소드를 호출하면 command 패턴을 적용하여 처리
 	public synchronized void processMessage(ServerThread sender, String rawMessage) {
 	    if(rawMessage == null || rawMessage.equals("")) return;
 	    System.out.println("[CommandManager] 메시지 받음: " + rawMessage);
 		
 	    String[] tokens = rawMessage.split(":", 2);
-	    String commandKey = tokens[0]; // "join", "message", "mafia_message" 중 하나
+	    String commandKey = tokens[0]; // "message", "mafia_message" 중 하나
 	    String payload;
 	    if(tokens.length > 1) {
 	    	payload = tokens[1]; // 유저가 보낸 메세지(실제 내용)
@@ -56,14 +57,13 @@ public class CommandManager {
 	    	payload="";
 	    }
 	    
-	    
-	    
+
 	    // 커맨드 객체에게 실행을 위임
-	    Command command = commandMap.get(commandKey);
+	    ICommand command = commandMap.get(commandKey);
 	    if (command != null) {
-	        command.execute(sender, payload, currentState);
+	        command.execute(sender, payload, logicBrain.getState()); // set_state()는 있는데 getState()는 없더라고용..
 	    } else {
-	    	// join, message, mafia_message가 아닌 명령어가 왔을 시
+	    	// message, mafia_message가 아닌 명령어가 왔을 시
 	    	sender.sendMessage("알 수 없는 명령어입니다: " + commandKey);
 	    }
 	}
@@ -77,15 +77,15 @@ public class CommandManager {
 	    }
 	}
 	
-	// Player 객체가 없어서 일단 주석 처리했습니다. 대충 이런식으로 만들면 될 것 같아요.
 	public void broadcastToMafia(String message) {
-//	     synchronized (allClients) {
-//	         for (ServerThread client : allClients) {
-//	             if (client.getRole(id?).equals("MAFIA")) {
+	     synchronized (allClients) {
+	         for (ServerThread client : allClients) {
+	        	 // 여기도 똑같이 플레이어의 역할을 가져와야 해서..
+//	             if (client.getRole(id).equals("MAFIA")) {
 //	                 client.sendMessage(message);
 //	             }
-//	         }
-//	     }
+	         }
+	     }
 	}
 	
 	

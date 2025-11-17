@@ -6,6 +6,8 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import Controller.사회자;
+
 // 주 역할: 서버 소켓 하나 열고, GameManager를 생성
 // 클라이언트가 접속하면 ServerThread를 생성해서 GameManager와 연결시켜주기
 public class ServerManager {
@@ -13,7 +15,10 @@ public class ServerManager {
 
 	public static void main(String[] args) {
 		ServerSocket serverSocket = null;
-		CommandManager gameManager = new CommandManager();
+		
+		// 두 개의 브레인을 가짐
+		사회자 logicBrain = new 사회자(); // 일단 new로 객체 생성했음 -> 싱글톤으로 변경 시 수정할 예정
+		CommandManager networkBrain = new CommandManager(logicBrain);
 		
 		try {
 			serverSocket = new ServerSocket();
@@ -25,7 +30,7 @@ public class ServerManager {
 			// 여러 클라이언트의 요청을 수락하고 writer를 연결
 			while (true) {
 				Socket socket = serverSocket.accept(); // 여기서 클라이언트를 받고
-				new ServerThread(socket, gameManager).start(); // 클라이언트를 위한 전용 소켓 생성 후 gameManaer 주입
+				new ServerThread(socket, networkBrain).start(); // 클라이언트를 위한 전용 소켓 생성 후 gameManaer 주입
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
